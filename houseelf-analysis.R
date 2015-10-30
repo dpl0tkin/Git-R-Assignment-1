@@ -18,8 +18,36 @@ gc_content <- function(sequence){
   return(gc)
 } 
 
+#Problem 7
+
+#Break down Elf table
+ElfID = Elf[["id"]]
+Elfear = Elf[["earlength"]]
+ElfDNA = Elf[["dnaseq"]]
+
 get_size_class <- function(seq){
-   #Calculate the GC-content for one or more sequences
+   #Designate ear length as Large or Small
    ear_lengths <- ifelse(seq > 10, "large", "small")
    return(ear_lengths)
 }
+
+#Create table with GC content values
+GC_output <-data.frame()
+for(row in ElfDNA){
+  GC <- gc_content(row)
+  total_GC <- data.frame(GC)
+  GC_output <- rbind(GC_output, total_GC)
+}
+
+#Create table with large and small values
+size_output <-data.frame()
+for(row in Elfear){
+  LorS <- get_size_class(row)
+  total_LorS <- data.frame(Ear_length = LorS)
+  size_output <- rbind(size_output, total_LorS)
+}
+
+elf.df = data.frame(ElfID, size_output, GC_output)
+
+write.csv(elf.df, file = "house_elf_data.csv")
+
